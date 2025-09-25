@@ -7,18 +7,22 @@ using UnityEngine;
 public class GenerateItems : MonoBehaviour
 {
 
-    public GameObject objectPrefab;   // A prefab with a SpriteRenderer
+    public GameObject objectPrefab;   
     public Sprite[] rewardSprites;
     //public List<GameObject> enemies;    
     void Start()
     {
         for (int i = 0; i < 10; i++)
         {
-            // Pick a position (for example, spread them out on the X axis)
             Vector3 spawnPos = new Vector3(i * 2f, 0, 0);
 
-            // Instantiate prefab
             GameObject newObj = Instantiate(objectPrefab, spawnPos, Quaternion.identity);
+            SpriteRenderer sr = newObj.GetComponent<SpriteRenderer>();
+            
+            sr.sprite = rewardSprites[Random.Range(0, rewardSprites.Length)];
+            
+
+
         }
 
     }
