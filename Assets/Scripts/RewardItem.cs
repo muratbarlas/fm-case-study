@@ -7,4 +7,6 @@ public class RewardItem : MonoBehaviour
     public int row;
     public int col;
     public string foodType;
+
+    public bool available = true;
 }
