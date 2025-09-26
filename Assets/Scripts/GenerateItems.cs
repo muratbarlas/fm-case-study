@@ -9,20 +9,30 @@ public class GenerateItems : MonoBehaviour
 
     public GameObject objectPrefab;   
     public Sprite[] rewardSprites;
-    //public List<GameObject> enemies;    
     void Start()
     {
-        for (int i = 0; i < 10; i++)
+        float spacing = 3f;
+        float startX = -4.5f; 
+        float startY = 5f;   
+
+        for (int row = 0; row < 4; row++)
         {
-            Vector3 spawnPos = new Vector3(i * 2f, 0, 0);
+            for (int col = 0; col < 4; col++)
+            {
 
-            GameObject newObj = Instantiate(objectPrefab, spawnPos, Quaternion.identity);
-            SpriteRenderer sr = newObj.GetComponent<SpriteRenderer>();
-            
-            sr.sprite = rewardSprites[Random.Range(0, rewardSprites.Length)];
-            
+                Vector3 spawnPos = new Vector3(startX + col * spacing, startY - row * spacing, 0);
+                GameObject newObj = Instantiate(objectPrefab, spawnPos, Quaternion.identity);
+                newObj.tag = "RewardItem";
+                SpriteRenderer reward = newObj.transform.Find("Reward").GetComponent<SpriteRenderer>();
+                reward.sprite = rewardSprites[Random.Range(0, rewardSprites.Length)];
 
+                RewardItem rewardFields = newObj.GetComponent<RewardItem>();
 
+                rewardFields.id = row * 4 + col;
+                rewardFields.row = row;
+                rewardFields.col = col;
+                rewardFields.foodType = reward.sprite.name;
+            }
         }
 
     }
