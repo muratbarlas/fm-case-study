@@ -748,7 +748,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79dce3ee6c301457c8a59cbed582da03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpinRoulette
-  spinButton: {fileID: 525692842}
 --- !u!4 &1638889715
 Transform:
   m_ObjectHideFlags: 0
