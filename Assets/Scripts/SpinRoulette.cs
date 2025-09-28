@@ -2,7 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;                
+using System.Linq;
+using TMPro;
+using UnityEngine.SceneManagement;
+
 
 
 public class SpinRoulette : MonoBehaviour
@@ -10,13 +13,15 @@ public class SpinRoulette : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     GameObject[] rewardItems;
     public Button spinButton;
-    int counter = 0;
+    public GameObject popupPanel;
+    int spinStep = 0;
     bool startSpin = false;
     int randomStop;
-    int stopCounter = 0;
+    int shuffledIndexPointer = 0;
     bool passedOneLap = false;
-
     private List<int> shuffledStops;
+    float stepTimer = 0f;
+    public GameObject walletParent;
 
     void Start()
     {
@@ -39,27 +44,32 @@ public class SpinRoulette : MonoBehaviour
                 rewardItems[i].transform.Find("Highlight").gameObject.SetActive(false);
             }
 
-            GameObject currentObj = rewardItems[counter];
+            GameObject currentObj = rewardItems[spinStep];
             currentObj.transform.Find("Highlight").gameObject.SetActive(true);
-            if (Time.frameCount % 500 == 0)
+
+            stepTimer += Time.deltaTime;
+            if (stepTimer >= 0.1f)
             {
-                counter++;
+                stepTimer = 0f;
+                spinStep++;
             }
 
-            if (counter >= rewardItems.Length)
+            if (spinStep >= rewardItems.Length)
             {
-                counter = 0;
+                spinStep = 0;
                 passedOneLap = true;
 
             }
 
-            if (passedOneLap && counter == randomStop)
+            if (passedOneLap && spinStep == randomStop)
             {
                 startSpin = false;
                 passedOneLap = false;
                 spinButton.interactable = true;
                 StartCoroutine(FlashAnimation(currentObj));
                 currentObj.GetComponent<RewardItem>().available = false;
+                updateWalletCount(currentObj);
+
             }
         }
     }
@@ -77,15 +87,19 @@ public class SpinRoulette : MonoBehaviour
 
     public void Spin()
     {
+        
+        
         spinButton.interactable = false;
-        counter = 0;
+        spinStep = 0;
         startSpin = true;
-        randomStop = shuffledStops[stopCounter];
-        stopCounter++;
+        randomStop = shuffledStops[shuffledIndexPointer];
+        shuffledIndexPointer++;
+        
     }
 
     public IEnumerator FlashAnimation(GameObject currentObj)
     {
+        popupPanel.SetActive(true);
         for (int i = 0; i < 4; i++)
         {
             currentObj.transform.Find("Highlight").gameObject.SetActive(true);
@@ -93,8 +107,32 @@ public class SpinRoulette : MonoBehaviour
             currentObj.transform.Find("Highlight").gameObject.SetActive(false);
             yield return new WaitForSeconds(0.3f);
         }
+        yield return new WaitForSeconds(0.3f);
+        popupPanel.SetActive(false);
         currentObj.transform.Find("Selected").gameObject.SetActive(true);
         currentObj.transform.Find("Check").gameObject.SetActive(true);
+        if (shuffledIndexPointer == shuffledStops.Count)
+        {
+            Debug.Log("collected all rewards");
+            SceneManager.LoadScene("TitleScene");
+        }
+    }
+
+
+    public void updateWalletCount(GameObject currentObj)
+    {
+        string foodType = currentObj.GetComponent<RewardItem>().foodType;
+        Debug.Log(foodType);
+        Transform FoodItem = walletParent.transform.Find(foodType);
+        TextMeshPro tmp = FoodItem.GetComponentInChildren<TextMeshPro>();
+        int valueToBeUpdated = 0;
+        if (int.TryParse(tmp.text, out valueToBeUpdated))
+        {
+             valueToBeUpdated++;
+        }
+
+        // Update the TMP text
+        tmp.text = valueToBeUpdated.ToString();
     }
 }
 
