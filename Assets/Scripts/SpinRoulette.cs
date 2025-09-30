@@ -6,9 +6,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Reflection;
-using UnityEditor.Rendering;
-
-
 
 public class SpinRoulette : MonoBehaviour
 {
@@ -52,7 +49,7 @@ public class SpinRoulette : MonoBehaviour
             currentObj.transform.Find("Highlight").gameObject.SetActive(true);
 
             stepTimer += Time.deltaTime;
-            if (stepTimer >= 0.1f)
+            if (stepTimer >= 0.08f)
             {
                 stepTimer = 0f;
                 spinStep++;
@@ -69,11 +66,7 @@ public class SpinRoulette : MonoBehaviour
             {
                 startSpin = false;
                 passedOneLap = false;
-                spinButton.interactable = true;
                 StartCoroutine(FlashAnimation(currentObj));
-
-                animateReward(currentObj);
-
                 currentObj.GetComponent<RewardItem>().available = false;
                 updateWalletCount(currentObj);
 
@@ -105,14 +98,14 @@ public class SpinRoulette : MonoBehaviour
     public IEnumerator FlashAnimation(GameObject currentObj)
     {
         popupPanel.SetActive(true);
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 3; i++)
         {
             currentObj.transform.Find("Highlight").gameObject.SetActive(true);
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.25f);
             currentObj.transform.Find("Highlight").gameObject.SetActive(false);
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.25f);
         }
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.25f);
         popupPanel.SetActive(false);
         currentObj.transform.Find("Selected").gameObject.SetActive(true);
         currentObj.transform.Find("Check").gameObject.SetActive(true);
@@ -121,39 +114,23 @@ public class SpinRoulette : MonoBehaviour
             Debug.Log("collected all rewards");
             SceneManager.LoadScene("TitleScene");
         }
+        spinButton.interactable = true;
+
     }
 
 
     public void updateWalletCount(GameObject currentObj)
     {
-        // string foodType = currentObj.GetComponent<RewardItem>().foodType;
-        // Debug.Log(foodType);
-        // Transform FoodItem = walletParent.transform.Find(foodType);
-        // TextMeshPro tmp = FoodItem.GetComponentInChildren<TextMeshPro>();
-        // int valueToBeUpdated = 0;
-        // if (int.TryParse(tmp.text, out valueToBeUpdated))
-        // {
-        //     valueToBeUpdated++;
-        // }
-
-        // // Update the TMP text
-        // tmp.text = valueToBeUpdated.ToString();
         string foodType = currentObj.GetComponent<RewardItem>().foodType;
         Debug.Log(foodType);
         FieldInfo walletField = walletData.GetType().GetField(foodType, BindingFlags.Instance | BindingFlags.Public);
         int currentValue = (int)walletField.GetValue(walletData);
         int incrementedVal = currentValue+1;
         walletField.SetValue(walletData, incrementedVal);
-
+        //update tmp on ui
         Transform FoodItem = walletParent.transform.Find(foodType);
         TextMeshPro tmp = FoodItem.GetComponentInChildren<TextMeshPro>();
         tmp.text = incrementedVal.ToString();
-    }
-
-
-    public void animateReward(GameObject rewardObj)
-    {
-        Transform sp = rewardObj.transform.Find("Reward");
     }
 
 }

@@ -26,7 +26,4 @@ public class WalletData : ScriptableObject
 
     public int Shrimp_0;
 
-
-    
-
 }

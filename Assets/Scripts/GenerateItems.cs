@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-
 
 public class GenerateItems : MonoBehaviour
 {
@@ -14,7 +10,6 @@ public class GenerateItems : MonoBehaviour
         float spacing = 3f;
         float startX = -4.5f; 
         float startY = 5f;   
-
         for (int row = 0; row < 4; row++)
         {
             for (int col = 0; col < 4; col++)
