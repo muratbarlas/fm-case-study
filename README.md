@@ -9,11 +9,12 @@ Recommended Game Window Aspect Ratio: 1080x1920
 
 ## Project Report
 
-[Dowload report pdf](https://drive.google.com/file/d/19GciizvtTgAn9Ix_ZucZnVxMcke0-Jjr/view?usp=sharing)
+[Dowload pdf report](https://drive.google.com/file/d/19GciizvtTgAn9Ix_ZucZnVxMcke0-Jjr/view?usp=sharing)
 
 
 ## Demo
 
+![](https://i.imgur.com/Zc0ewXk.png) 
 
 ![hippo](https://media.giphy.com/media/3X0bpZGm7TB0ccgCVM/giphy.gif)
 
