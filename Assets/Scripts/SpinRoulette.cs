@@ -67,7 +67,6 @@ public class SpinRoulette : MonoBehaviour
                 startSpin = false;
                 passedOneLap = false;
                 StartCoroutine(FlashAnimation(currentObj));
-                currentObj.GetComponent<RewardItem>().available = false;
                 updateWalletCount(currentObj);
 
             }

@@ -23,9 +23,7 @@ public class GenerateItems : MonoBehaviour
 
                 RewardItem rewardFields = newObj.GetComponent<RewardItem>();
 
-                rewardFields.id = row * 4 + col;
-                rewardFields.row = row;
-                rewardFields.col = col;
+                
                 rewardFields.foodType = reward.sprite.name.Replace("-", "");
             }
         }
