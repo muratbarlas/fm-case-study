@@ -31,7 +31,7 @@ public class GenerateItems : MonoBehaviour
                 rewardFields.id = row * 4 + col;
                 rewardFields.row = row;
                 rewardFields.col = col;
-                rewardFields.foodType = reward.sprite.name;
+                rewardFields.foodType = reward.sprite.name.Replace("-", "");
             }
         }
 

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Reflection;
+using UnityEditor.Rendering;
 
 
 
@@ -22,6 +24,8 @@ public class SpinRoulette : MonoBehaviour
     private List<int> shuffledStops;
     float stepTimer = 0f;
     public GameObject walletParent;
+
+    public WalletData walletData;
 
     void Start()
     {
@@ -67,6 +71,9 @@ public class SpinRoulette : MonoBehaviour
                 passedOneLap = false;
                 spinButton.interactable = true;
                 StartCoroutine(FlashAnimation(currentObj));
+
+                animateReward(currentObj);
+
                 currentObj.GetComponent<RewardItem>().available = false;
                 updateWalletCount(currentObj);
 
@@ -87,14 +94,12 @@ public class SpinRoulette : MonoBehaviour
 
     public void Spin()
     {
-        
-        
         spinButton.interactable = false;
         spinStep = 0;
         startSpin = true;
         randomStop = shuffledStops[shuffledIndexPointer];
         shuffledIndexPointer++;
-        
+
     }
 
     public IEnumerator FlashAnimation(GameObject currentObj)
@@ -121,18 +126,35 @@ public class SpinRoulette : MonoBehaviour
 
     public void updateWalletCount(GameObject currentObj)
     {
+        // string foodType = currentObj.GetComponent<RewardItem>().foodType;
+        // Debug.Log(foodType);
+        // Transform FoodItem = walletParent.transform.Find(foodType);
+        // TextMeshPro tmp = FoodItem.GetComponentInChildren<TextMeshPro>();
+        // int valueToBeUpdated = 0;
+        // if (int.TryParse(tmp.text, out valueToBeUpdated))
+        // {
+        //     valueToBeUpdated++;
+        // }
+
+        // // Update the TMP text
+        // tmp.text = valueToBeUpdated.ToString();
         string foodType = currentObj.GetComponent<RewardItem>().foodType;
         Debug.Log(foodType);
+        FieldInfo walletField = walletData.GetType().GetField(foodType, BindingFlags.Instance | BindingFlags.Public);
+        int currentValue = (int)walletField.GetValue(walletData);
+        int incrementedVal = currentValue+1;
+        walletField.SetValue(walletData, incrementedVal);
+
         Transform FoodItem = walletParent.transform.Find(foodType);
         TextMeshPro tmp = FoodItem.GetComponentInChildren<TextMeshPro>();
-        int valueToBeUpdated = 0;
-        if (int.TryParse(tmp.text, out valueToBeUpdated))
-        {
-             valueToBeUpdated++;
-        }
-
-        // Update the TMP text
-        tmp.text = valueToBeUpdated.ToString();
+        tmp.text = incrementedVal.ToString();
     }
+
+
+    public void animateReward(GameObject rewardObj)
+    {
+        Transform sp = rewardObj.transform.Find("Reward");
+    }
+
 }
 

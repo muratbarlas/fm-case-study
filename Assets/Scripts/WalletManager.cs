@@ -1,6 +1,6 @@
 using UnityEngine;
+using System.Reflection;
 using TMPro;
-
 
 public class WalletManager : MonoBehaviour
 {
@@ -8,8 +8,13 @@ public class WalletManager : MonoBehaviour
     public Sprite[] sprites;
     public Vector2 startPos = new Vector2(); 
     public Vector2 spacing = new Vector2();
+    public WalletData WalletData;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+
+   
+   
     void Start()
     {
         int spriteIndex = 0;
@@ -26,7 +31,13 @@ public class WalletManager : MonoBehaviour
                 GameObject go = Instantiate(prefab, pos, Quaternion.identity, transform);
                 SpriteRenderer sr = go.GetComponentInChildren<SpriteRenderer>();
                 sr.sprite = sprites[spriteIndex];
-                go.name = sprites[spriteIndex].name;
+                go.name = sprites[spriteIndex].name.Replace("-", "");
+
+                //Debug.Log(go.name);
+                //string cleaned_loopup = go.name.Replace("-", "");
+                FieldInfo field = typeof(WalletData).GetField(go.name);
+                int fieldValue = (int)field.GetValue(WalletData);
+                go.GetComponentInChildren<TextMeshPro>().text = fieldValue.ToString();
                 spriteIndex++;
             }
         }

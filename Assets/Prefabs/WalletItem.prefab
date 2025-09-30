@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 4024454508992480540}
   - component: {fileID: 5030220907353610573}
   m_Layer: 0
-  m_Name: Fig_0
+  m_Name: reward_sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
