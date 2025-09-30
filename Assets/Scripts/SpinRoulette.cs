@@ -21,8 +21,23 @@ public class SpinRoulette : MonoBehaviour
     private List<int> shuffledStops;
     float stepTimer = 0f;
     public GameObject walletParent;
-
     public WalletData walletData;
+
+    //public WalletData walletData;
+
+    // void Awake()
+    // {
+
+    //     walletData = Resources.Load<WalletData>("ScriptableObjects/WalletData");
+    //     if (walletData == null)
+    //     {
+    //         Debug.Log("null wallet");
+    //     }
+    //      else
+    // {
+    //     Debug.Log("WalletData loaded: " + walletData.name);
+    // }
+    // }
 
     void Start()
     {

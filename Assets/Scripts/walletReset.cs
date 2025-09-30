@@ -14,7 +14,7 @@ public static class walletReset
     {
         if (state == PlayModeStateChange.ExitingPlayMode)
         {
-            WalletData wallet = AssetDatabase.LoadAssetAtPath<WalletData>("Assets/ScriptableObjects/WalletData.asset");
+            WalletData wallet = AssetDatabase.LoadAssetAtPath<WalletData>("Assets/Resources/ScriptableObjects/WalletData.asset");
             if (wallet != null)
             {
                  var fields = typeof(WalletData).GetFields();
